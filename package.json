@@ -1,12 +1,26 @@
 {
   "name": "rn-with-styles",
   "version": "0.1.0",
-  "description": "",
+  "description": " A styling package for easily adding themes to your React Native projects.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "keywords": [
+    "react-native",
+    "ios",
+    "android",
+    "theme",
+    "dark",
+    "light",
+    "switch-theme",
+  ],
+  "repository": "https://github.com/ahmetkuslular/rn-with-styles",
   "author": "Ahmet Kuslular",
+  "bugs": {
+    "url": "https://github.com/ahmetkuslular/rn-with-styles/issues"
+  },
+  "homepage": "https://ahmetkuslular.github.io/rn-with-styles",
   "license": "MIT",
   "dependencies": {
     "hoist-non-react-statics": "^3.3.2",
