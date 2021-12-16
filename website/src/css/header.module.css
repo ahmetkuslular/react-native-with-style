@@ -1,0 +1,165 @@
+.header {
+  padding-top: 4em;
+  padding-bottom: 4em;
+}
+
+.wrapper {
+  --padding: 2rem;
+  max-width: var(--max-content-width);
+  margin: 0 auto;
+  padding-top: var(--padding);
+  padding-left: var(--padding);
+  padding-right: var(--padding);
+}
+
+.wrapper a {
+  color: var(--text-color);
+}
+
+.wrapper a:hover {
+  color: var(--ifm-color-primary);
+  text-decoration: none;
+}
+
+.hero {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.heroWrapper {
+  position: relative;
+  z-index: 1;
+  padding-top: 5vw;
+  padding-bottom: 5vw;
+  flex: 3;
+  margin-right: 1em;
+}
+
+.heading {
+  color: var(--ifm-color-emphasis-900);
+  font-weight: 600;
+  font-size: 3rem;
+  line-height: 3.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.subHeading {
+  color: var(--ifm-color-emphasis-800);
+  line-height: 2.2rem;
+  font-size: 1.4rem;
+  font-weight: 300;
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+}
+
+.flexItem {
+  /* margin: 0 0.5rem; */
+}
+
+.button {
+  padding: 0.8rem 2rem;
+  font-size: 1.2rem;
+  border-radius: 5px;
+  transform-origin: 50% 50%;
+  background-color: var(--ifm-color-primary);
+  appearance: none;
+  border: 0;
+  outline: none;
+  white-space: nowrap;
+  font-family: var(--sans-serif);
+  color: #fff !important;
+  cursor: url(/pointer.svg), pointer;
+  margin-left: 0;
+}
+
+.copyPaste {
+  position: relative;
+  display: flex;
+  align-items: center;
+  color: var(--ifm-color-emphasis-800);
+  padding: 0.9rem 1.5rem;
+  appearance: none;
+  outline: none;
+  cursor: url(/pointer.svg), pointer;
+  border: none;
+  background: var(--ifm-color-emphasis-200);
+  border-radius: 5px;
+  word-break: break-word;
+  font-family: var(--mono-font-stack);
+  font-size: 1rem;
+  margin-left: 1em;
+}
+
+.phoneImageWrapper,
+.phoneImageWrapperOnLeft {
+  flex: 3;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  perspective: 1500px;
+}
+
+.phoneImageWrapper {
+  display: flex;
+}
+
+.phoneImageWrapperOnLeft {
+  display: none;
+}
+
+@media screen and (max-width: 1100px) and (min-width: 940px) {
+  .buttonsWrapper {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .copyPaste {
+    margin-left: 0;
+    margin-top: 1em;
+  }
+}
+
+@media screen and (max-width: 940px) {
+  .hero {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+@media screen and (max-width: 620px) {
+  .buttonsWrapper {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .copyPaste {
+    margin-left: 0;
+    margin-top: 1em;
+  }
+
+  .header {
+    padding-top: 2em;
+    padding-bottom: 2em;
+  }
+
+  .phoneImageWrapper img {
+    max-height: 320px;
+  }
+
+  .phoneImageWrapperOnLeft {
+    display: flex;
+  }
+
+  .phoneImageWrapper {
+    display: none;
+  }
+}
+
+.copyIcon {
+  color: var(--ifm-color-emphasis-600);
+  margin-left: 8px;
+}
