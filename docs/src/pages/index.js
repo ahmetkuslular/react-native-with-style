@@ -16,7 +16,7 @@ function Content() {
             <img src={PhoneImage} style={{ maxHeight: 450 }} />
           </div>
           <div className={styles.heroWrapper}>
-            <img src={BatImage} style={{ maxHeight: 120 }} />
+            <img src={BatImage} style={{ maxHeight: 60 }} />
             <h1 className={styles.heading}>
               Your eyes can deceive you; don’t trust them.
             </h1>
@@ -44,7 +44,7 @@ function Content() {
             </div>
           </div>
           <div className={styles.phoneImageWrapper}>
-            <img src={PhoneImage} style={{ maxHeight: 700 }} />
+            <img src={PhoneImage} style={{ maxHeight: 450 }} />
           </div>
         </section>
       </div>
