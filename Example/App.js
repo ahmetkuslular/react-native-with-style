@@ -1,5 +1,5 @@
 import React from 'react';
-import {ThemeProvider} from 'rn-with-styles';
+import {ThemeProvider} from 'react-native-with-style';
 
 import HomeScreen from './HomeScreen';
 

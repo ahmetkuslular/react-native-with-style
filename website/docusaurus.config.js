@@ -3,12 +3,12 @@ module.exports = {
   tagline:
     'A styling package for easily adding themes to your React Native projects. ',
   url: 'https://ahmetkuslular.github.io',
-  baseUrl: '/rn-with-styles/',
+  baseUrl: '/react-native-with-style/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
   organizationName: 'ahmetkuslular',
-  projectName: 'rn-with-styles',
+  projectName: 'react-native-with-style',
   themeConfig: {
     twitterImage: 'img/og.png',
     image: 'img/og.png',
@@ -22,7 +22,7 @@ module.exports = {
           position: 'left',
         },
         {
-          href: 'https://github.com/ahmetkuslular/rn-with-styles',
+          href: 'https://github.com/ahmetkuslular/react-native-with-style',
           label: 'GitHub',
           position: 'right',
         },

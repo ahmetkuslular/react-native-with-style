@@ -34,10 +34,10 @@ function Content() {
                 <button
                   className={styles.copyPaste}
                   onClick={() =>
-                    navigator.clipboard.writeText("yarn add rn-with-styles")
+                    navigator.clipboard.writeText("yarn add react-native-with-style")
                   }
                 >
-                  yarn add rn-with-styles
+                  yarn add react-native-with-style
                   <CopySvg className={styles.copyIcon} />
                 </button>
               </div>

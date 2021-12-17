@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   Text,
 } from 'react-native';
-import withStyles from 'rn-with-styles';
+import withStyles from 'react-native-with-style';
 const icons = {
   light: require('./assets/sun.png'),
   dark: require('./assets/moon.png'),

@@ -40,7 +40,7 @@ const theme = {
 
 ```jsx
 import React from "react";
-import { ThemeProvider } from "rn-with-styles";
+import { ThemeProvider } from "react-native-with-style";
 
 const App = () => {
   return (
@@ -55,14 +55,14 @@ export default App;
 
 ### With Styles
 
-`withStyles` is a high order function. You need to give your component as a parameter. You do not need to use StyleSheet again for the style function you will create. `withStyle` does this for you
+`withStyles` is a high order function. You need to give your component as a parameter. You do not need to use StyleSheet again for the style function you will create. `withStyles` does this for you
 
 :::note
 The styles function you created takes other fields as parameters, such as the color and fonts you pass in the theme.
 :::
 
 ```jsx
-import withStyles from "rn-with-styles";
+import withStyles from "react-native-with-style";
 
 const styles = ({ color, fonts }) => ({
   container: {
