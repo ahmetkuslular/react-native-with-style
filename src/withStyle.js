@@ -1,14 +1,14 @@
-import React, { forwardRef, useContext } from "react";
+import React, { forwardRef } from "react";
 import hoistNonReactStatics from "hoist-non-react-statics";
 
-import ThemeContext from "./ThemeContext";
+import withPerf from "./perf";
 import RNInterface from "./RNInterface";
+import { useTheme } from "./NewThemeContext";
 
 const EMPTY_STYLES = {};
 const EMPTY_STYLES_FN = () => EMPTY_STYLES;
-const DEFAULT_THEME = "light";
 
-function withStyles(stylesFn = EMPTY_STYLES_FN, { flushBefore = false } = {}) {
+function withStyle(stylesFn = EMPTY_STYLES_FN, { flushBefore = false } = {}) {
   stylesFn = stylesFn || EMPTY_STYLES_FN;
 
   const stylesFnResultCacheMap =
@@ -26,6 +26,7 @@ function withStyles(stylesFn = EMPTY_STYLES_FN, { flushBefore = false } = {}) {
 
   function getComponentCache(theme, component, themeType) {
     const themeCache = withStylesCache.get(theme);
+
     if (!themeCache) {
       return null;
     }
@@ -36,77 +37,96 @@ function withStyles(stylesFn = EMPTY_STYLES_FN, { flushBefore = false } = {}) {
     return componentCache[themeType];
   }
 
-  function updateComponentCache(theme, component, themeType, results) {
+  function updateComponentCache(
+    theme,
+    component,
+    themeType,
+    results,
+    themeTypes
+  ) {
     let themeCache = withStylesCache.get(theme);
+
     if (!themeCache) {
       themeCache = typeof WeakMap === "undefined" ? new Map() : new WeakMap();
       withStylesCache.set(theme, themeCache);
     }
     let componentCache = themeCache.get(component);
-    if (!componentCache?.[themeType]) {
-      componentCache = { ...componentCache, [themeType]: {} };
+
+    if (!componentCache) {
+      themeTypes.map((themeKey) => {
+        componentCache = {
+          ...componentCache,
+          [themeKey]: {},
+        };
+      });
       themeCache.set(component, componentCache);
     }
-
     componentCache[themeType] = results;
   }
 
-  function makeCreateFn(stylesInterface) {
-    let create = stylesInterface.create_style || stylesInterface.create;
+  function makeCreateFn(themeType, stylesInterface) {
+    const themeSelector = themeType.toUpperCase();
+    let create =
+      stylesInterface[`create${themeSelector}`] || stylesInterface.create;
     const original = create;
+    if (process.env.NODE_ENV !== "production") {
+      create = withPerf("create")(create);
+    }
     return { create, original };
   }
 
-  function makeResolveFn(stylesInterface) {
-    let resolve = stylesInterface.resolve_style || stylesInterface.resolve;
+  function makeResolveFn(themeType, stylesInterface) {
+    const themeSelector = themeType.toUpperCase();
+    let resolve =
+      stylesInterface[`resolve${themeSelector}`] || stylesInterface.resolve;
     const original = resolve;
+    if (process.env.NODE_ENV !== "production") {
+      resolve = withPerf("resolve")(resolve);
+    }
     return { resolve, original };
   }
 
   return function withStylesHOC(WrappedComponent) {
     const WithStyles = ({ forwardedRef, ...rest }) => {
-      const context = useContext(ThemeContext);
-
-      const getCurrentInterface = () => {
-        return RNInterface;
-      };
+      const context = useTheme();
 
       const getCurrentTheme = () => {
-        const { theme = {}, themeType = DEFAULT_THEME } = context;
-        const { colors, ...rest } = theme;
+        return context && context.currentTheme;
+      };
 
-        return {
-          color: colors[themeType || DEFAULT_THEME] || {},
-          ...rest,
-        };
+      const getCurrentThemeType = () => {
+        return (context && context.themeType) || "light";
+      };
+
+      const getThemeTypes = () => {
+        const colors = context?.theme?.pallets;
+        return Object.keys(colors).map((key) => key);
       };
 
       const getProps = () => {
-        const stylesInterface = getCurrentInterface();
+        const stylesInterface = RNInterface;
         const theme = getCurrentTheme();
+        const themeType = getCurrentThemeType();
 
-        const componentCache = getComponentCache(
-          theme,
-          WithStyles,
-          context?.themeType
-        );
+        const componentCache = getComponentCache(theme, WithStyles, themeType);
 
         const interfaceChanged =
           !componentCache ||
           !componentCache.stylesInterface ||
           (stylesInterface &&
             componentCache.stylesInterface !== stylesInterface);
+
         const themeChanged = !componentCache || componentCache.theme !== theme;
 
-        if (!interfaceChanged && !themeChanged) {
+        if (!themeChanged) {
           return componentCache.props;
         }
 
         const createFn =
-          (interfaceChanged && makeCreateFn(stylesInterface)) ||
+          (interfaceChanged && makeCreateFn(themeType, stylesInterface)) ||
           componentCache.create;
         const resolveFn =
-          (interfaceChanged && makeResolveFn(stylesInterface)) ||
+          (interfaceChanged && makeResolveFn(themeType, stylesInterface)) ||
           componentCache.resolve;
 
         const { create } = createFn;
@@ -122,29 +142,35 @@ function withStyles(stylesFn = EMPTY_STYLES_FN, { flushBefore = false } = {}) {
             stylesFnResult !== componentCache.stylesFnResult) &&
             create(stylesFnResult)) ||
           componentCache.props.styles;
-        const props = { styles, theme };
-        const results = {
-          stylesInterface,
-          theme,
-          create: createFn,
-          resolve: resolveFn,
-          stylesFnResult,
-          props,
-        };
+        const props = { styles, theme, themeType };
+        const themeTypes = getThemeTypes();
 
-        updateComponentCache(theme, WithStyles, context.themeType, results);
+        updateComponentCache(
+          theme,
+          WithStyles,
+          themeType,
+          {
+            stylesInterface,
+            theme,
+            create: createFn,
+            resolve: resolveFn,
+            stylesFnResult,
+            props,
+          },
+          themeTypes
+        );
 
         return props;
       };
 
       const flush = () => {
-        const stylesInterface = getCurrentInterface();
+        const stylesInterface = RNInterface;
         if (stylesInterface && stylesInterface.flush) {
           stylesInterface.flush();
         }
       };
 
-      const { styles, theme } = getProps();
+      const { theme, styles, themeType } = getProps();
 
       if (flushBefore) {
         flush();
@@ -155,10 +181,9 @@ function withStyles(stylesFn = EMPTY_STYLES_FN, { flushBefore = false } = {}) {
           ref={forwardedRef}
           {...rest}
           {...{
+            currentTheme: theme,
             styles,
-            theme,
-            themeType: context.themeType,
-            toggleTheme: context.toggleTheme,
+            themeType,
           }}
         />
       );
@@ -168,18 +193,10 @@ function withStyles(stylesFn = EMPTY_STYLES_FN, { flushBefore = false } = {}) {
       <WithStyles {...props} forwardedRef={ref} />
     ));
 
-    if (WrappedComponent.propTypes) {
-      ForwardedWithStyles.propTypes = { ...WrappedComponent.propTypes };
-      delete ForwardedWithStyles.propTypes.styles;
-      delete ForwardedWithStyles.propTypes.theme;
-    }
-    if (WrappedComponent.defaultProps) {
-      ForwardedWithStyles.defaultProps = { ...WrappedComponent.defaultProps };
-    }
     ForwardedWithStyles.WrappedComponent = WrappedComponent;
 
     return hoistNonReactStatics(ForwardedWithStyles, WrappedComponent);
   };
 }
 
-export default withStyles;
+export default withStyle;
