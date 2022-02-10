@@ -1,6 +1,6 @@
 {
   "name": "react-native-with-style",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": " A styling package for easily adding themes to your React Native projects.",
   "main": "index.js",
   "scripts": {

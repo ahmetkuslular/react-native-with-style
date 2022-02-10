@@ -3,7 +3,7 @@ import hoistNonReactStatics from "hoist-non-react-statics";
 
 import withPerf from "./perf";
 import RNInterface from "./RNInterface";
-import { useTheme } from "./NewThemeContext";
+import { useTheme } from "./ThemeContext";
 
 const EMPTY_STYLES = {};
 const EMPTY_STYLES_FN = () => EMPTY_STYLES;
