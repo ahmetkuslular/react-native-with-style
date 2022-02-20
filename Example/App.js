@@ -4,7 +4,7 @@ import {ThemeProvider} from 'react-native-with-style';
 import HomeScreen from './HomeScreen';
 
 const theme = {
-  colors: {
+  pallets: {
     dark: {
       background: '#000000',
     },

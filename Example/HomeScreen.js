@@ -7,7 +7,8 @@ import {
   TouchableOpacity,
   Text,
 } from 'react-native';
-import withStyles from 'react-native-with-style';
+import withStyle from 'react-native-with-style';
+
 const icons = {
   light: require('./assets/sun.png'),
   dark: require('./assets/moon.png'),
@@ -50,4 +51,4 @@ const style = ({color}) => ({
   },
 });
 
-export default withStyles(style)(HomeScreen);
+export default withStyle(HomeScreen, style);
