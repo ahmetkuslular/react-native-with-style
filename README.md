@@ -1,4 +1,4 @@
-# React Native With Styles
+# React Native With Style
 
 A styling package for easily adding themes to your React Native projects. 🌑 🔆
 
@@ -12,6 +12,7 @@ It's actually not that hard to style in RN projects. However, I do not like to m
 - clean code 🚀
 - using cached styles 🌚 🌝
 - theme management
+- system theme
 
 ## Installation
 

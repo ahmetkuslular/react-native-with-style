@@ -16,7 +16,7 @@ const theme = {
 
 const App = () => {
   return (
-    <ThemeProvider theme={theme} defaultTheme="light">
+    <ThemeProvider theme={theme} defaultTheme="system">
       <HomeScreen />
     </ThemeProvider>
   );

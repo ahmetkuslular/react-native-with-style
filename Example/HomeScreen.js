@@ -20,6 +20,7 @@ const HomeScreen = ({styles, themeType, toggleTheme}) => {
   const handleToggleTheme = () => {
     toggleTheme(themeType === 'light' ? 'dark' : 'light');
   };
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle={barStyle} />

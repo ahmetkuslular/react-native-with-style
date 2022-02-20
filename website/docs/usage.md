@@ -16,7 +16,7 @@ Before using with styles in your application, you need to wrap your app with `Th
 
 ```jsx
 const theme = {
-  colors: {
+  pallets: {
     light: {
       background: "black",
     },
@@ -38,6 +38,8 @@ const theme = {
 
 > The default value of `defaultTheme` is `light`. You can give this field one of your color palettes under colors.
 
+> You can also use the value `system` If you pass it to `system` it will use the device's theme by default.
+
 ```jsx
 import React from "react";
 import { ThemeProvider } from "react-native-with-style";
@@ -55,14 +57,14 @@ export default App;
 
 ### With Styles
 
-`withStyles` is a high order function. You need to give your component as a parameter. You do not need to use StyleSheet again for the style function you will create. `withStyles` does this for you
+`withStyle` is a high order function. You need to give your component as a parameter. You do not need to use StyleSheet again for the style function you will create. `withStyle` does this for you
 
 :::note
 The styles function you created takes other fields as parameters, such as the color and fonts you pass in the theme.
 :::
 
 ```jsx
-import withStyles from "react-native-with-style";
+import withStyle from "react-native-with-style";
 
 const styles = ({ color, fonts }) => ({
   container: {
@@ -76,12 +78,12 @@ const styles = ({ color, fonts }) => ({
   },
 });
 
-export default withStyles(styles)(HomeScreen);
+export default withStyle(HomeScreen, styles);
 ```
 
 ### Component Props
 
-Takes 4 props wrapped with withStyles.
+# Takes 4 props wrapped with withStyle.
 
 ### `styles`
 return the styles you created for the components

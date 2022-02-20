@@ -1,4 +1,5 @@
 import React, { useMemo, useState, createContext, useCallback } from "react";
+import { Appearance } from "react-native";
 
 const DEFAULT_THEME = "light";
 const DefaultThemeContext = createContext({
@@ -31,11 +32,15 @@ const ThemeProvider = ({ children, theme, defaultTheme = DEFAULT_THEME }) => {
     setThemeType(type);
   }, []);
 
+  const isSystem = themeType === "system";
+  const colorScheme = Appearance.getColorScheme();
   const themes = useMemo(() => getThemeTypes(theme), []);
+  const selectedThemeType = isSystem ? colorScheme : themeType;
+
   const value = {
-    themeType,
+    themeType: selectedThemeType,
     theme,
-    currentTheme: themes[themeType],
+    currentTheme: themes[selectedThemeType],
     toggleTheme: handleToggleTheme,
   };
 
