@@ -1,6 +1,6 @@
 module.exports = {
   someSidebar: {
-    Documents: ["getting-started", "usage"],
+    Documents: ["getting-started", "provider", "with-style", "use-with-style"],
   },
 };
 

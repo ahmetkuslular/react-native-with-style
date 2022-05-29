@@ -1,9 +1,8 @@
-import React, { forwardRef } from "react";
-import hoistNonReactStatics from "hoist-non-react-statics";
+import React from 'react';
 
-import withPerf from "./perf";
-import RNInterface from "./RNInterface";
-import { useWithStyle } from "./ThemeContext";
+import withPerf from './perf';
+import RNInterface from './RNInterface';
+import {useWithStyle} from './ThemeContext';
 
 const EMPTY_STYLES = {};
 const EMPTY_STYLES_FN = () => EMPTY_STYLES;
@@ -11,12 +10,12 @@ const EMPTY_STYLES_FN = () => EMPTY_STYLES;
 function withStyle(
   Component,
   stylesFn = EMPTY_STYLES_FN,
-  { flushBefore = false } = {}
+  {flushBefore = false} = {},
 ) {
   stylesFn = stylesFn || EMPTY_STYLES_FN;
 
   const stylesFnResultCacheMap =
-    typeof WeakMap === "undefined" ? new Map() : new WeakMap();
+    typeof WeakMap === 'undefined' ? new Map() : new WeakMap();
 
   function getOrCreateStylesFnResultCache(theme) {
     const cachedResultForTheme = stylesFnResultCacheMap.get(theme);
@@ -26,7 +25,7 @@ function withStyle(
   }
 
   const withStylesCache =
-    typeof WeakMap === "undefined" ? new Map() : new WeakMap();
+    typeof WeakMap === 'undefined' ? new Map() : new WeakMap();
 
   function getComponentCache(theme, component, themeType) {
     const themeCache = withStylesCache.get(theme);
@@ -46,18 +45,18 @@ function withStyle(
     component,
     themeType,
     results,
-    themeTypes
+    themeTypes,
   ) {
     let themeCache = withStylesCache.get(theme);
 
     if (!themeCache) {
-      themeCache = typeof WeakMap === "undefined" ? new Map() : new WeakMap();
+      themeCache = typeof WeakMap === 'undefined' ? new Map() : new WeakMap();
       withStylesCache.set(theme, themeCache);
     }
     let componentCache = themeCache.get(component);
 
     if (!componentCache) {
-      themeTypes.map((themeKey) => {
+      themeTypes.map(themeKey => {
         componentCache = {
           ...componentCache,
           [themeKey]: {},
@@ -73,10 +72,10 @@ function withStyle(
     let create =
       stylesInterface[`create${themeSelector}`] || stylesInterface.create;
     const original = create;
-    if (process.env.NODE_ENV !== "production") {
-      create = withPerf("create")(create);
+    if (process.env.NODE_ENV !== 'production') {
+      create = withPerf('create')(create);
     }
-    return { create, original };
+    return {create, original};
   }
 
   function makeResolveFn(themeType, stylesInterface) {
@@ -84,13 +83,13 @@ function withStyle(
     let resolve =
       stylesInterface[`resolve${themeSelector}`] || stylesInterface.resolve;
     const original = resolve;
-    if (process.env.NODE_ENV !== "production") {
-      resolve = withPerf("resolve")(resolve);
+    if (process.env.NODE_ENV !== 'production') {
+      resolve = withPerf('resolve')(resolve);
     }
-    return { resolve, original };
+    return {resolve, original};
   }
 
-  const WithStyles = (props) => {
+  const WithStyles = props => {
     const context = useWithStyle();
 
     const getCurrentTheme = () => {
@@ -98,12 +97,11 @@ function withStyle(
     };
 
     const getCurrentThemeType = () => {
-      return (context && context.themeType) || "light";
+      return (context && context.themeType) || 'light';
     };
 
     const getThemeTypes = () => {
-      const colors = context?.theme?.pallets;
-      return Object.keys(colors).map((key) => key);
+      return context && context.themeTypes;
     };
 
     const getProps = () => {
@@ -131,7 +129,7 @@ function withStyle(
         (interfaceChanged && makeResolveFn(themeType, stylesInterface)) ||
         componentCache.resolve;
 
-      const { create } = createFn;
+      const {create} = createFn;
 
       const createChanged =
         !componentCache ||
@@ -143,8 +141,8 @@ function withStyle(
         ((createChanged || stylesFnResult !== componentCache.stylesFnResult) &&
           create(stylesFnResult)) ||
         componentCache.props.styles;
-      const props = { styles, theme, themeType };
       const themeTypes = getThemeTypes();
+      const props = {styles, theme, themeType, themeTypes};
 
       updateComponentCache(
         theme,
@@ -158,7 +156,7 @@ function withStyle(
           stylesFnResult,
           props,
         },
-        themeTypes
+        themeTypes,
       );
 
       return props;
@@ -171,7 +169,7 @@ function withStyle(
       }
     };
 
-    const { theme, styles, themeType } = getProps();
+    const {theme, styles, themeType, themeTypes} = getProps();
 
     if (flushBefore) {
       flush();
@@ -184,6 +182,7 @@ function withStyle(
           currentTheme: theme,
           styles,
           themeType,
+          themeTypes,
           toggleTheme: context.toggleTheme,
         }}
       />

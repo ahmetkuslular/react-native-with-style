@@ -1,5 +1,5 @@
 module.exports = {
-  title: 'React Native With Styles',
+  title: 'React Native With Style',
   tagline:
     'A styling package for easily adding themes to your React Native projects. ',
   url: 'https://ahmetkuslular.github.io',
@@ -13,7 +13,7 @@ module.exports = {
     twitterImage: 'img/og.png',
     image: 'img/og.png',
     navbar: {
-      title: 'React Native With Styles',
+      title: 'React Native With Style',
       items: [
         {
           to: 'docs/',
