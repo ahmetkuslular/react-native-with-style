@@ -177,9 +177,12 @@ function withStyle(
       flush();
     }
 
+    const { forwardedRef, ...rest } = props;
+
     return (
       <Component
-        {...props}
+        ref={forwardedRef}
+        {...rest}
         {...{
           currentTheme: theme,
           styles,
@@ -190,7 +193,11 @@ function withStyle(
     );
   };
 
-  return WithStyles;
+  const ForwardedWithStyles = forwardRef((props, ref) => (
+    <WithStyles {...props} forwardedRef={ref} />
+  ));
+
+  return ForwardedWithStyles;
 }
 
 export default withStyle;
